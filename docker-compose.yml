@@ -4,12 +4,13 @@ services:
     image: registry.cn-shenzhen.aliyuncs.com/yuanjm/yuanjm:v1
     container_name: nginx-php
     ports:
-      - "127.0.0.1:8080:80"
-      - "192.168.1.69:8080:80"
+      - "80:80"
     volumes:
-      -  /data/wwwroot:/data/wwwroot:rw
+      - ./app:/data/wwwroot:rw
       - ./logs:/data/wwwlogs:rw
       - ./conf/nginx/vhost:/usr/local/nginx/conf/vhost:ro
+      - ./conf/nginx/nginx.conf:/usr/local/nginx/conf/nginx.conf:ro
+      - ./conf/php/www.conf:/usr/local/php/etc/php-fpm.d/www.conf:ro
       - ./my.sh:/opt/my.sh:ro
     restart: always
     command: bash -c "/usr/bin/supervisord && /opt/my.sh"
