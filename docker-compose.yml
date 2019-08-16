@@ -9,7 +9,7 @@ services:
       - "80:80"
     volumes:
       - ./app:/data/wwwroot:rw
-      - ./logs:/data/wwwlogs:rw
+      - ./logs/nginx:/data/wwwlogs:rw
       - ./conf/nginx/vhost:/usr/local/nginx/conf/vhost:ro
       - ./conf/nginx/nginx.conf:/usr/local/nginx/conf/nginx.conf:ro
       - ./conf/php/www.conf:/usr/local/php/etc/php-fpm.d/www.conf:ro
