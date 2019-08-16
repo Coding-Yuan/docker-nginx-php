@@ -13,11 +13,11 @@ services:
       - ./conf/nginx/vhost:/usr/local/nginx/conf/vhost:ro
       - ./conf/nginx/nginx.conf:/usr/local/nginx/conf/nginx.conf:ro
       - ./conf/php/www.conf:/usr/local/php/etc/php-fpm.d/www.conf:ro
-      - ./my.sh:/opt/my.sh:ro
+      - ./work/nginx-php.sh:/opt/my.sh
     restart: always
-    command: bash -c "/usr/bin/supervisord && /opt/my.sh"
     depends_on:
       - mysql
+    command: bash -c "/opt/my.sh && /usr/bin/supervisord"
 
   mysql:
     restart: always
@@ -33,3 +33,7 @@ services:
       --collation-server=utf8mb4_general_ci
     volumes:
       - ./data/mysql:/var/lib/mysql 
+      - ./conf/mysql:/etc/mysql/conf.d:rw
+      - ./logs/mysql:/var/log/mysql:rw
+      - ./work/mysql.sh:/opt/my.sh
+   
