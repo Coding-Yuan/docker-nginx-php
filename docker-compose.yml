@@ -1,7 +1,7 @@
 version: '3.2'
 services:
   nginx-php:
-    image: registry.cn-shenzhen.aliyuncs.com/yuanjm/nginx-php:v1
+    image: registry.cn-shenzhen.aliyuncs.com/yuanjm/nginx-php:v2.1
     container_name: nginx-php
     links:
       - mysql:mysql
@@ -32,7 +32,7 @@ services:
       --character-set-server=utf8mb4
       --collation-server=utf8mb4_general_ci
     volumes:
-      - ./data/mysql:/var/lib/mysql 
+      - ./data/mysql:/var/lib/mysql
       - ./conf/mysql:/etc/mysql/conf.d:rw
       - ./logs/mysql:/var/log/mysql:rw
       - ./work/mysql.sh:/opt/my.sh
