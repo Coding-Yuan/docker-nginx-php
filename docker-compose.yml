@@ -5,6 +5,7 @@ services:
     container_name: nginx-php
     links:
       - mysql:mysql
+      - php72:php72
     ports:
       - "80:80"
     volumes:
@@ -17,6 +18,8 @@ services:
     restart: always
     depends_on:
       - mysql
+      - redis
+      - php72
     command: bash -c "/opt/my.sh && /usr/bin/supervisord"
 
   mysql:
@@ -36,4 +39,21 @@ services:
       - ./conf/mysql:/etc/mysql/conf.d:rw
       - ./logs/mysql:/var/log/mysql:rw
       - ./work/mysql.sh:/opt/my.sh
+
+  redis:
+    restart: always
+    image: redis:5.0.6
+    container_name: redis
+    ports:
+      - "6379:6379" 
+
+  php72:
+    restart: always
+    container_name: php72
+    image: crunchgeek/php-fpm:7.2
+    ports:
+      - "9000:9000" 
+    volumes:
+      - ./app:/data/wwwroot:rw  
+      - ./conf/php72/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
    
