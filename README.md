@@ -5,7 +5,9 @@ Docker构建的dnmp环境
 
 - nginx-1.16
 - php-7.1（常用扩展均已安装，如Swoole）
+- php-fpm7.2
 - mysql-5.6.45
+- redis-5.0.6
 
 ## 使用
 
@@ -25,6 +27,11 @@ cd docker-nginx-php
 docker-compose up -d
 ```
 
+3. 可能遇到的问题
+
+- 在Windows下work/nginx-php.sh脚本可能会出错，yml文件中注释了就行
+- docker桌面版刚安装好，启动容器却找不到目录，可能是docker的共享磁盘没有开启
+
 ## 目录结构
 
 ```
@@ -38,7 +45,9 @@ docker-compose up -d
 │   ├── nginx // nginx配置
 │   │   ├── nginx.conf
 │   │   └── vhost // 虚拟域名配置
-│   └── php   // php配置
+│   └── php   // php7.1配置
+│   |    └── www.conf
+│   └── php72 // php7.2配置
 │       └── www.conf
 ├── data // 数据挂载目录
 │   ├── mysql // mysql相关数据文件
@@ -107,6 +116,7 @@ server {
             include fastcgi_params;
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
             # fastcgi_pass 127.0.0.1:9000;
+            # fastcgi_pass php72:9000; // 如需php7.2版本，开启此项
             fastcgi_pass unix:/dev/shm/php-cgi.sock;
             try_files $uri =404;
         }
